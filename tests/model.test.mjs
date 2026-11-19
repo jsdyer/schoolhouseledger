@@ -1,21 +1,28 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import { cleanLines } from '../web/model.mjs';
-test('trims, removes blanks and preserves first-seen order', () => {
-  assert.deepEqual(cleanLines('  Halifax\nLangley\nHalifax\n\nVancouver  '), {
-    text: 'Halifax\nLangley\nVancouver', count: 3, removed: 1,
-  });
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+const edition = JSON.parse(
+  readFileSync(new URL("../web/data/edition.json", import.meta.url), "utf8"),
+);
+import { schoolYear, history } from "../web/model.mjs";
+test("entries use the school year ending and keep daily averages separate from enrolment", () => {
+  assert.equal(schoolYear(1895), "1894–95");
+  const rows = history(
+    edition.schools.Langley,
+    edition.schools["Langley, East"],
+    [1890, 1895],
+  );
+  assert.equal(rows[1].left.enrolled, 32);
+  assert.equal(rows[1].right.daily, 12.85);
+  assert.equal(rows[1].left.salary, 50);
+  assert.equal(rows[0].left.spending, null);
 });
-test('supports Windows and old Mac line endings', () => {
-  assert.equal(cleanLines('a\r\nb\ra').text, 'a\nb');
+test("a missing school-year remains absent when its comparison school has figures", () => {
+  const [row] = history(
+    edition.schools["Port Kells"],
+    edition.schools.Langley,
+    [1890],
+  );
+  assert.equal(row.left, null);
+  assert.equal(row.right.daily, 15.7);
 });
-test('empty text and whitespace produce an empty result', () => {
-  assert.deepEqual(cleanLines(' \n\t'), { text: '', count: 0, removed: 0 });
-});
-test('preserves case and Unicode', () => {
-  assert.equal(cleanLines('Québec\nquébec\n東京\nQuébec').text, 'Québec\nquébec\n東京');
-});
-test('treats markup as ordinary text', () => {
-  assert.equal(cleanLines('<script>alert(1)</script>\n<script>alert(1)</script>').text, '<script>alert(1)</script>');
-});
-test('rejects non-text input', () => { assert.throws(() => cleanLines(null), TypeError); });
