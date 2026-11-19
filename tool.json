@@ -1,16 +1,49 @@
 {
-  "id": "coolcode-tool-template",
-  "title": "CoolCode Tool Starter",
-  "description": "A browser-only example that trims lines and removes exact duplicates.",
-  "category": "security",
-  "tags": ["text", "lines", "duplicates"],
-  "icon": "scan-search",
-  "url": "/coolcode-tool-template/",
-  "source": "https://github.com/jsdyer/coolcode-tool-template",
+  "id": "schoolhouseledger",
+  "title": "Schoolhouse Ledger",
+  "description": "Compare enrolment, daily attendance and spending in historic Lower Mainland schools.",
+  "category": "places",
+  "tags": [
+    "Langley",
+    "Surrey",
+    "public schools",
+    "history",
+    "attendance",
+    "education"
+  ],
+  "icon": "map",
+  "url": "/schoolhouseledger/",
+  "source": "https://github.com/jsdyer/schoolhouseledger",
   "hosting": "project",
   "access": "browser",
   "data_info": {
-    "mode": "local",
-    "detail": "The browser reads the text you paste and compares its lines."
+    "mode": "snapshot",
+    "detail": "BC’s 1894–95 schools report records enrolment and average attendance across school years, alongside each school’s expenditure in the report year.",
+    "cadence": "Monthly",
+    "probes": [
+      {
+        "label": "Data retrieved",
+        "url": "https://coolcode.ca/schoolhouseledger/data/edition.json",
+        "path": [
+          "retrieved"
+        ],
+        "count_at": {
+          "path": [
+            "count"
+          ],
+          "unit": "school-year records"
+        }
+      },
+      {
+        "label": "School years ending",
+        "url": "https://coolcode.ca/schoolhouseledger/data/edition.json",
+        "path": [
+          "start"
+        ],
+        "end_path": [
+          "end"
+        ]
+      }
+    ]
   }
 }
