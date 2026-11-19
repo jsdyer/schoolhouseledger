@@ -20,7 +20,7 @@ The original page numbers and the PDF viewer’s page numbers differ. Each recor
 
 ## Refresh and verification
 
-Monthly. The importer verifies the reviewed scan and validates the keyed school-year transcription using the Python standard library. The retrieval date records the last successful source check in UTC. The coverage on the homepage and in the tool describes the underlying records. A changed archive requiring review or a failed download leaves the previous edition available. The scheduled workflow validates the data, runs the tests and publishes the resulting snapshot. For a manual refresh, run `python3 scripts/refresh.py`.
+Monthly. The importer retrieves the Internet Archive scan, with a byte-identical Wikimedia Commons copy available if the first host is unavailable. It verifies the reviewed scan and validates the keyed school-year transcription using the Python standard library. The retrieval date records the last successful source check in UTC. The coverage on the homepage and in the tool describes the underlying records. A changed archive requiring review or a failed download leaves the previous edition available. The scheduled workflow validates the data, runs the tests and publishes the resulting snapshot. For a manual refresh, run `python3 scripts/refresh.py`.
 
 The interface, selections and CSV exports run locally in the browser. Visiting a source or map link opens the publisher’s site. The offline build uses the checked-in edition. To build and preview it, run the following commands.
 
