@@ -20,9 +20,8 @@
         <div class="mast">
           <h1>{{TITLE}}</h1>
           <p>
-            Look inside historic schools around Langley and Surrey. Compare how
-            many pupils enrolled, how many attended on an average day, and what
-            the province recorded spending.
+            Choose two historic schools around Langley and Surrey to compare enrolment,
+            daily attendance and spending. For one school’s history, <a href="#school-records">browse the school records</a>.
           </p>
         </div>
       </div>
@@ -68,10 +67,12 @@
         </div>
         <button type="button" id="csv">Download these schools</button>
       </section>
+      <section aria-labelledby="school-records"><h2 id="school-records">School records by name</h2>
+        <ul>{{SCHOOL_LINKS}}</ul>
+      </section>
       <noscript
         ><p>
-          Enable JavaScript to explore the records. The sources and full guide
-          are available below.
+          Open a school record above to see its attendance history. Enable JavaScript to compare two schools.
         </p></noscript
       >
     </main>

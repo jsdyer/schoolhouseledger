@@ -10,6 +10,10 @@ Compare historical school enrolment and average daily attendance around Langley 
 In 1894–95 Langley enrolled 32 pupils and averaged 19.79 present each day. Langley East enrolled 23 and averaged 12.85. Earlier attendance tables and the report-year financial figures cover different periods.
 <!-- /coolcode:guide -->
 
+## School histories
+
+The [school index](https://coolcode.ca/schoolhouseledger/#school-records) links to a readable history for each school with documented figures. Each page includes its annual figures and the printed report page. Selecting a school year opens that school and year in the comparison tool. The build regenerates these pages and their [sitemap](https://coolcode.ca/schoolhouseledger/sitemap.xml) from the published edition.
+
 ## Sources and interpretation
 
 The 24th annual report of BC public schools contains a short account and a table of earlier attendance for each school. This edition includes 38 entries spread across seven schools from 1889–90 through 1894–95. The schools are Aldergrove, Cloverdale, Langley, Langley East, Mud Bay, Port Kells and Surrey Centre. Each school keeps its historical name. The year selector uses the school year ending in the displayed spring or summer.

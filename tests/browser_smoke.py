@@ -48,6 +48,12 @@ def main():
                 page.set_viewport_size({"width": 390, "height": 844})
                 assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
                 page.screenshot(path=str(screenshots / "mobile.png"), full_page=True)
+                page.get_by_role("link", name="Port Kells", exact=True).click()
+                assert page.get_by_role("heading", name="Port Kells school records").is_visible()
+                page.get_by_role("link", name="1891–92", exact=True).click()
+                page.wait_for_function("document.querySelector('#first').value === 'Port Kells'")
+                assert page.locator("#year").input_value() == "1892"
+                assert "10.96" in page.locator("#finding").inner_text()
                 assert not errors, errors
                 browser.close()
             print("Browser checks passed: source records, filters, CSV download and mobile layout")

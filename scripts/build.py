@@ -8,6 +8,8 @@ import shutil
 import tempfile
 from urllib.parse import urlsplit
 
+from school_pages import write_school_pages
+
 ROOT = Path(__file__).resolve().parents[1]
 SLUG = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 
@@ -58,6 +60,7 @@ def build(root=ROOT):
             if placeholder not in page:
                 raise ValueError(f"Missing template placeholder: {placeholder}")
             page = page.replace(placeholder, escape(tool[key], quote=True))
+        page = page.replace("{{SCHOOL_LINKS}}", write_school_pages(stage, tool))
         if re.search(r"\{\{[A-Z_]+\}\}", page):
             raise ValueError("Unresolved template placeholder in web/index.html")
         index.write_text(page, encoding="utf-8")

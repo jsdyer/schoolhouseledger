@@ -4,6 +4,9 @@ import shutil
 import sys
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
+from html import unescape
+from urllib.parse import urlencode
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from build import ROOT, build, metadata
 
@@ -33,6 +36,31 @@ class BuildTests(unittest.TestCase):
         self.assertIn('href="./style.css"', page)
         self.assertFalse((self.root / "dist/private.txt").exists())
         self.assertTrue((self.root / "dist/.nojekyll").exists())
+
+    def test_school_sitemap_contains_only_documented_linked_histories(self):
+        build(self.root)
+        site = self.root / "dist"
+        entry = (site / "index.html").read_text()
+        data = json.loads((site / "data/edition.json").read_text())
+        sitemap = ET.parse(site / "sitemap.xml")
+        urls = {node.text for node in sitemap.findall(".//{*}loc")}
+        self.assertEqual(len(urls), len(data["schools"]))
+        for name, school in data["schools"].items():
+            slug = name.replace(", ", "-").replace(" ", "-").lower()
+            path = f"schools/{slug}/"
+            url = "https://coolcode.ca/schoolhouseledger/" + path
+            page = (site / path / "index.html").read_text()
+            self.assertIn(url, urls)
+            self.assertIn(f'href="./{path}"', entry)
+            self.assertIn(f'rel="canonical" href="{url}"', page)
+            self.assertIn(f'{data["source"]}#page={school["page"]}', page)
+            self.assertEqual(page.count('<th scope="row">'), len(school["years"]))
+            for year, figures in school["years"].items():
+                self.assertIn("../../#" + urlencode({"school": name, "year": year}), unescape(page))
+                self.assertIn(f'<td>{figures["enrolled"]:,}</td><td>{figures["daily"]:.2f}</td>', page)
+        port = (site / "schools/port-kells/index.html").read_text()
+        self.assertNotIn("1889–90", port)
+        self.assertIn("annual school expenditure of $640", port)
 
     def test_url_matches_tool_id(self):
         self.edit(url="/different/")

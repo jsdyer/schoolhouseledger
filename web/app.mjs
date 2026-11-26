@@ -21,9 +21,17 @@ try {
     "year",
     data.years.map((y) => [y, schoolYear(y)]),
   );
-  byId("first").value = "Langley, East";
-  byId("second").value = "Langley";
-  byId("year").value = 1895;
+  function readSelection() {
+    const params = new URLSearchParams(location.hash.slice(1));
+    const first = names.includes(params.get("school")) ? params.get("school") : "Langley, East";
+    const second = names.includes(params.get("compare")) ? params.get("compare")
+      : first === "Langley" ? "Langley, East" : "Langley";
+    const year = Number(params.get("year"));
+    byId("first").value = first;
+    byId("second").value = second;
+    byId("year").value = data.years.includes(year) ? year : data.end;
+  }
+  readSelection();
   let csv;
   const money = (n) => (n == null ? "—" : "$" + number(n));
   function render() {
@@ -110,7 +118,19 @@ try {
     );
   }
   byId("csv").onclick = () => downloadCsv("school-comparison.csv", csv);
-  document.querySelector("main").addEventListener("change", render);
+  document.querySelector("main").addEventListener("change", () => {
+    const params = new URLSearchParams({
+      school: byId("first").value, compare: byId("second").value, year: byId("year").value,
+    });
+    window.history.replaceState(null, "", "#" + params);
+    render();
+  });
+  window.addEventListener("hashchange", () => {
+    if (!location.hash || new URLSearchParams(location.hash.slice(1)).has("school")) {
+      readSelection();
+      render();
+    }
+  });
   render();
 } catch {
   failed();
