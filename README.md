@@ -12,7 +12,7 @@ In 1894–95 Langley enrolled 32 pupils and averaged 19.79 present each day. Lan
 
 ## School histories
 
-The [school index](https://coolcode.ca/schoolhouseledger/#school-records) links to a readable history for each school with documented figures. Each page includes its annual figures and the printed report page. Selecting a school year opens that school and year in the comparison tool. The build regenerates these pages and their [sitemap](https://coolcode.ca/schoolhouseledger/sitemap.xml) from the published edition.
+The [school index](https://coolcode.ca/schoolhouseledger/schools/) links to a readable history for each school with documented figures. Each page includes its annual figures and the printed report page. Selecting a school year opens that school and year in the comparison tool. The build regenerates these pages and their [sitemap](https://coolcode.ca/schoolhouseledger/sitemap.xml) from the published edition.
 
 ## Sources and interpretation
 

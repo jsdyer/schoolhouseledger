@@ -44,13 +44,20 @@ class BuildTests(unittest.TestCase):
         data = json.loads((site / "data/edition.json").read_text())
         sitemap = ET.parse(site / "sitemap.xml")
         urls = {node.text for node in sitemap.findall(".//{*}loc")}
-        self.assertEqual(len(urls), len(data["schools"]))
+        self.assertEqual(len(urls), 1 + len(data["schools"]))
+        self.assertIn("https://coolcode.ca/schoolhouseledger/schools/", urls)
+        directory = (site / "schools/index.html").read_text()
+        self.assertIn('href="./schools/"', entry)
+        self.assertIn('rel="canonical" href="https://coolcode.ca/schoolhouseledger/schools/"', directory)
+        self.assertEqual(directory.count('<th scope="row">'), len(data["schools"]))
         for name, school in data["schools"].items():
             slug = name.replace(", ", "-").replace(" ", "-").lower()
             path = f"schools/{slug}/"
             url = "https://coolcode.ca/schoolhouseledger/" + path
             page = (site / path / "index.html").read_text()
             self.assertIn(url, urls)
+            self.assertIn(f'href="../{path}"', directory)
+            self.assertIn('href="../">Browse all school histories', page)
             self.assertIn(f'href="./{path}"', entry)
             self.assertIn(f'rel="canonical" href="{url}"', page)
             self.assertIn(f'{data["source"]}#page={school["page"]}', page)
